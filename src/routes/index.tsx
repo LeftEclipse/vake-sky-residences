@@ -1,24 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { CustomCursor } from "@/components/CustomCursor";
+import { Navigation } from "@/components/Navigation";
+import { Hero } from "@/components/sections/Hero";
+import { Landmark } from "@/components/sections/Landmark";
+import { VerticalCity } from "@/components/sections/VerticalCity";
+import { TowerExplorer } from "@/components/sections/TowerExplorer";
+import { Amenities } from "@/components/sections/Amenities";
+import { ViewExperience } from "@/components/sections/ViewExperience";
+import { LocationSection } from "@/components/sections/LocationSection";
+import { Investment } from "@/components/sections/Investment";
+import { Enquiry } from "@/components/sections/Enquiry";
+import { Footer } from "@/components/sections/Footer";
+import { CompareBar } from "@/components/CompareBar";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <SmoothScroll />
+      <CustomCursor />
+      <Navigation />
+      <Hero />
+      <main className="relative z-10">
+        <Landmark />
+        <VerticalCity />
+        <TowerExplorer />
+        <Amenities />
+        <ViewExperience />
+        <LocationSection />
+        <Investment />
+        <Enquiry />
+        <Footer />
+      </main>
+      <CompareBar />
+    </>
   );
 }
