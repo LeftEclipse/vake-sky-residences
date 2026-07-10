@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ElementType } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef, type ElementType } from "react";
+import { useGsap } from "@/hooks/useGsap";
 
 interface AnimatedTextProps {
   text: string;
@@ -22,8 +22,8 @@ export function AnimatedText({
 }: AnimatedTextProps) {
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!ref.current) return;
     const targets = ref.current.querySelectorAll<HTMLElement>("[data-at-inner]");
     const ctx = gsap.context(() => {
       gsap.fromTo(

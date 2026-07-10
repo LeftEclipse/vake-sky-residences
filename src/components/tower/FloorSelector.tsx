@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
 import { availableOnFloor } from "@/lib/tower-data";
 
 interface FloorSelectorProps {
@@ -12,8 +12,8 @@ interface FloorSelectorProps {
 export function FloorSelector({ floors, hoverFloor, onHover, onSelect }: FloorSelectorProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!ref.current) return;
     const rows = ref.current.querySelectorAll("[data-floor-row]");
     gsap.fromTo(
       rows,

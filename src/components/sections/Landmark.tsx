@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
 import { TOWER } from "@/lib/tower-brand";
 import towerCutout from "@/assets/tower-cutout.png";
 
@@ -15,8 +15,8 @@ export function Landmark() {
   const outerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!outerRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!outerRef.current) return;
     const q = gsap.utils.selector(stageRef);
 
     const ctx = gsap.context(() => {

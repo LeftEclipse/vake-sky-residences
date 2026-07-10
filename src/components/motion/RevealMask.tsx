@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef, type ReactNode } from "react";
+import { useGsap } from "@/hooks/useGsap";
 
 interface RevealMaskProps {
   children: ReactNode;
@@ -13,8 +13,8 @@ interface RevealMaskProps {
 export function RevealMask({ children, className = "", direction = "up", delay = 0 }: RevealMaskProps) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!ref.current) return;
     const from =
       direction === "up"
         ? "inset(100% 0% 0% 0%)"

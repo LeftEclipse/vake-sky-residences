@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CompareBar } from "@/components/CompareBar";
 import { CustomCursor } from "@/components/CustomCursor";
@@ -10,7 +10,8 @@ import { ResidenceExplorer } from "@/components/residences/ResidenceExplorer";
 import { ResidencesHero } from "@/components/residences/ResidencesHero";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Footer } from "@/components/sections/Footer";
-import { gsap, prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
+import { useGsap } from "@/hooks/useGsap";
+import { scrollToId } from "@/lib/gsapSetup";
 import { TOWER } from "@/lib/tower-brand";
 
 export const Route = createFileRoute("/residences")({
@@ -39,8 +40,8 @@ function ResidencesPage() {
 
   const scrollToPrices = () => scrollToId("prices");
 
-  useEffect(() => {
-    if (!ctaRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!ctaRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ctaRef.current!.querySelectorAll("[data-cta-item]"),

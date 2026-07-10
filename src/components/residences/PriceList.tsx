@@ -1,8 +1,8 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { AnimatedText } from "@/components/motion/AnimatedText";
 import { RevealMask } from "@/components/motion/RevealMask";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useGsap } from "@/hooks/useGsap";
 import {
   ALL_FLOORS,
   BEDROOM_OPTIONS,
@@ -98,8 +98,8 @@ export function PriceList({ highlightId }: { highlightId?: string | null }) {
     setVisibleCount(PAGE_SIZE);
   };
 
-  useEffect(() => {
-    if (!tableRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!tableRef.current) return;
     const rows = tableRef.current.querySelectorAll("[data-price-row]");
     const ctx = gsap.context(() => {
       gsap.fromTo(

@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
+import { scrollToId } from "@/lib/gsapSetup";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { SEGMENTS } from "@/lib/tower-data";
 import { TOWER } from "@/lib/tower-brand";
@@ -13,8 +14,8 @@ export function ResidencesHero({ onViewPrices }: ResidencesHeroProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    if (!rootRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!rootRef.current) return;
     const q = gsap.utils.selector(rootRef);
 
     const ctx = gsap.context(() => {

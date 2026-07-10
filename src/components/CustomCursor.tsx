@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { gsap, prefersReducedMotion, isCoarsePointer } from "@/lib/gsapSetup";
+import { isCoarsePointer, prefersReducedMotion } from "@/lib/gsapSetup";
 
 /**
  * Minimal circular cursor that follows the pointer.
@@ -17,35 +17,44 @@ export function CustomCursor() {
 
   useEffect(() => {
     if (!enabled || !ref.current) return;
-    const el = ref.current;
-    const xTo = gsap.quickTo(el, "x", { duration: 0.35, ease: "power3.out" });
-    const yTo = gsap.quickTo(el, "y", { duration: 0.35, ease: "power3.out" });
 
-    const move = (e: PointerEvent) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
-    };
+    let cleanup: (() => void) | undefined;
 
-    const over = (e: PointerEvent) => {
-      const target = (e.target as HTMLElement).closest<HTMLElement>("[data-cursor]");
-      const label = target?.dataset.cursor ?? "";
-      if (labelRef.current) labelRef.current.textContent = label;
-      gsap.to(el, {
-        width: label ? 84 : 12,
-        height: label ? 84 : 12,
-        backgroundColor: label ? "oklch(0.693 0.058 78 / 0.92)" : "oklch(0.693 0.058 78 / 0.9)",
-        duration: 0.4,
-        ease: "power3.out",
-      });
-      gsap.to(labelRef.current, { opacity: label ? 1 : 0, duration: 0.25 });
-    };
+    import("@/lib/gsap.client").then(({ gsap }) => {
+      const el = ref.current;
+      if (!el) return;
 
-    window.addEventListener("pointermove", move, { passive: true });
-    window.addEventListener("pointerover", over, { passive: true });
-    return () => {
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerover", over);
-    };
+      const xTo = gsap.quickTo(el, "x", { duration: 0.35, ease: "power3.out" });
+      const yTo = gsap.quickTo(el, "y", { duration: 0.35, ease: "power3.out" });
+
+      const move = (e: PointerEvent) => {
+        xTo(e.clientX);
+        yTo(e.clientY);
+      };
+
+      const over = (e: PointerEvent) => {
+        const target = (e.target as HTMLElement).closest<HTMLElement>("[data-cursor]");
+        const label = target?.dataset.cursor ?? "";
+        if (labelRef.current) labelRef.current.textContent = label;
+        gsap.to(el, {
+          width: label ? 84 : 12,
+          height: label ? 84 : 12,
+          backgroundColor: label ? "oklch(0.693 0.058 78 / 0.92)" : "oklch(0.693 0.058 78 / 0.9)",
+          duration: 0.4,
+          ease: "power3.out",
+        });
+        gsap.to(labelRef.current, { opacity: label ? 1 : 0, duration: 0.25 });
+      };
+
+      window.addEventListener("pointermove", move, { passive: true });
+      window.addEventListener("pointerover", over, { passive: true });
+      cleanup = () => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerover", over);
+      };
+    });
+
+    return () => cleanup?.();
   }, [enabled]);
 
   if (!enabled) return null;

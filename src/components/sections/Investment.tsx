@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
 import { AnimatedText } from "@/components/motion/AnimatedText";
 
 const FACTS = [
@@ -12,8 +12,8 @@ const FACTS = [
 export function Investment() {
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!ref.current) return;
     const ctx = gsap.context(() => {
       ref.current!.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
         const target = Number(el.dataset.count);

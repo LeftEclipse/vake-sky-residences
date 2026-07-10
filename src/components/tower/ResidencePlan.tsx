@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef, useState } from "react";
+import { useGsap } from "@/hooks/useGsap";
 import { UNIT_LAYOUTS, getResidence, type Residence } from "@/lib/tower-data";
 
 interface ResidencePlanProps {
@@ -18,9 +18,8 @@ export function ResidencePlan({ floor, onOpen, onBack }: ResidencePlanProps) {
   const [hovered, setHovered] = useState<Residence | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!rootRef.current || prefersReducedMotion()) return;
-    // entering the floor: plan scales from "inside the building"
+  useGsap(({ gsap }) => {
+    if (!rootRef.current) return;
     gsap.fromTo(
       rootRef.current.querySelector("[data-plan]"),
       { scale: 1.15, opacity: 0 },

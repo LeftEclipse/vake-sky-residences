@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { AnimatedText } from "@/components/motion/AnimatedText";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { FloorSelector } from "@/components/tower/FloorSelector";
 import { ResidencePlan } from "@/components/tower/ResidencePlan";
 import { TowerElevation } from "@/components/tower/TowerElevation";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useGsap } from "@/hooks/useGsap";
 import {
   SEGMENTS,
   availableOnFloor,
@@ -38,8 +38,8 @@ export function ResidenceExplorer({ onViewPrices, onResidenceSelect }: Residence
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!sectionRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         sectionRef.current!.querySelectorAll("[data-reveal]"),
@@ -57,8 +57,8 @@ export function ResidenceExplorer({ onViewPrices, onResidenceSelect }: Residence
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    if (!stageRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!stageRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         stageRef.current,

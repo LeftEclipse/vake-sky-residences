@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
 
 interface ParallaxImageProps {
   src: string;
@@ -29,8 +29,8 @@ export function ParallaxImage({
   const wrapRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    if (!wrapRef.current || !imgRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!wrapRef.current || !imgRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         imgRef.current,

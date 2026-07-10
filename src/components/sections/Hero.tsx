@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
+import { scrollToId } from "@/lib/gsapSetup";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { TOWER } from "@/lib/tower-brand";
 import heroTower from "@/assets/hero-tower.jpg";
@@ -8,19 +9,17 @@ export function Hero() {
   const rootRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    if (!rootRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!rootRef.current) return;
     const q = gsap.utils.selector(rootRef);
 
     const ctx = gsap.context(() => {
-      // ——— load sequence ———
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.fromTo(imgRef.current, { scale: 1.18, filter: "brightness(0.1)" }, { scale: 1.08, filter: "brightness(1)", duration: 2.2, ease: "power2.out" })
         .fromTo(q("[data-hero-line]"), { scaleY: 0 }, { scaleY: 1, duration: 1.4, ease: "power4.inOut" }, "-=1.6")
         .fromTo(q("[data-hero-title] span span"), { yPercent: 118 }, { yPercent: 0, duration: 1.3, ease: "power4.out", stagger: 0.14 }, "-=1.0")
         .fromTo(q("[data-hero-label]"), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 1, stagger: 0.12 }, "-=0.7");
 
-      // ——— scroll parallax layers ———
       const scrub = gsap.timeline({
         scrollTrigger: {
           trigger: rootRef.current,

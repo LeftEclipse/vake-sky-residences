@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { useRef } from "react";
+import { useGsap } from "@/hooks/useGsap";
 import { TOWER } from "@/lib/tower-brand";
 import pool from "@/assets/pool.jpg";
 import dining from "@/assets/dining.jpg";
@@ -20,8 +20,8 @@ export function Amenities() {
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!outerRef.current || !trackRef.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!outerRef.current || !trackRef.current) return;
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px)", () => {

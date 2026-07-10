@@ -1,5 +1,7 @@
-import { useRef, type ReactNode, type MouseEvent } from "react";
-import { gsap, prefersReducedMotion, isCoarsePointer } from "@/lib/gsapSetup";
+import { useEffect, useRef, type MouseEvent, type ReactNode } from "react";
+import { isCoarsePointer, prefersReducedMotion } from "@/lib/gsapSetup";
+
+type GsapInstance = typeof import("@/lib/gsap.client")["gsap"];
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -21,9 +23,18 @@ export function MagneticButton({
   ariaLabel,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
+  const gsapRef = useRef<GsapInstance | null>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion() || isCoarsePointer()) return;
+    import("@/lib/gsap.client").then(({ gsap }) => {
+      gsapRef.current = gsap;
+    });
+  }, []);
 
   const onMove = (e: MouseEvent) => {
-    if (!ref.current || prefersReducedMotion() || isCoarsePointer()) return;
+    const gsap = gsapRef.current;
+    if (!gsap || !ref.current || prefersReducedMotion() || isCoarsePointer()) return;
     const rect = ref.current.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
@@ -36,7 +47,8 @@ export function MagneticButton({
   };
 
   const onLeave = () => {
-    if (!ref.current) return;
+    const gsap = gsapRef.current;
+    if (!gsap || !ref.current) return;
     gsap.to(ref.current, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.5)" });
   };
 

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { gsap, prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
+import { useGsap } from "@/hooks/useGsap";
+import { prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
 import { TOWER } from "@/lib/tower-brand";
 
 const LINKS = [
@@ -21,8 +22,8 @@ export function Navigation({ variant = "blend" }: NavigationProps) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const onHome = pathname === "/";
 
-  useEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
+  useGsap(({ gsap }) => {
+    if (!ref.current) return;
     const items = ref.current.querySelectorAll("[data-nav-item]");
     gsap.fromTo(
       items,
