@@ -81,7 +81,7 @@ export function Navigation({ variant = "blend" }: NavigationProps) {
       </button>
 
       {open && (
-        <div className="pointer-events-auto absolute inset-x-0 top-0 flex h-screen flex-col justify-center gap-8 bg-midnight px-8 md:hidden">
+        <div className="pointer-events-auto fixed inset-0 z-50 flex flex-col justify-center gap-8 bg-midnight px-8 mix-blend-normal md:hidden">
           <button
             className="tech-label absolute right-6 top-7 text-ivory"
             onClick={() => setOpen(false)}
