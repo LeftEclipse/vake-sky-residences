@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ResidencesRouteImport } from './routes/residences'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResidenceIdRouteImport } from './routes/residence.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResidencesRoute = ResidencesRouteImport.update({
+  id: '/residences',
+  path: '/residences',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,30 +37,34 @@ const ResidenceIdRoute = ResidenceIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/residences': typeof ResidencesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/residence/$id': typeof ResidenceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/residences': typeof ResidencesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/residence/$id': typeof ResidenceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/residences': typeof ResidencesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/residence/$id': typeof ResidenceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sitemap.xml' | '/residence/$id'
+  fullPaths: '/' | '/residences' | '/sitemap.xml' | '/residence/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sitemap.xml' | '/residence/$id'
-  id: '__root__' | '/' | '/sitemap.xml' | '/residence/$id'
+  to: '/' | '/residences' | '/sitemap.xml' | '/residence/$id'
+  id: '__root__' | '/' | '/residences' | '/sitemap.xml' | '/residence/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ResidencesRoute: typeof ResidencesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ResidenceIdRoute: typeof ResidenceIdRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/residences': {
+      id: '/residences'
+      path: '/residences'
+      fullPath: '/residences'
+      preLoaderRoute: typeof ResidencesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -87,9 +104,20 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ResidencesRoute: ResidencesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ResidenceIdRoute: ResidenceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

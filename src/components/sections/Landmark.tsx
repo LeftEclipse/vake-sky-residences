@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { TOWER } from "@/lib/tower-brand";
 import towerCutout from "@/assets/tower-cutout.png";
 
 const STATS = [
-  { id: "height", value: "260 M", label: "Height", top: "18%", side: "left" },
-  { id: "floors", value: "70", label: "Floors", top: "38%", side: "right" },
-  { id: "residences", value: "843", label: "Residences", top: "58%", side: "left" },
+  { id: "height", value: `${TOWER.heightM} M`, label: "Height", top: "18%", side: "left" },
+  { id: "floors", value: String(TOWER.floors), label: "Floors", top: "38%", side: "right" },
+  { id: "residences", value: String(TOWER.residences), label: "Residences", top: "58%", side: "left" },
   { id: "views", value: "Views", label: "Across Tbilisi", top: "76%", side: "right" },
 ] as const;
 
@@ -35,8 +36,8 @@ export function Landmark() {
       // tower rises
       tl.fromTo(q("[data-tower]"), { yPercent: 42, scale: 0.94 }, { yPercent: 0, scale: 1, duration: 1, ease: "none" }, 0);
 
-      // giant 260 drifting behind at a different speed
-      tl.fromTo(q("[data-big260]"), { yPercent: 60, opacity: 0 }, { yPercent: -6, opacity: 0.5, duration: 0.55, ease: "none" }, 0.3);
+      // giant height number drifting behind at a different speed
+      tl.fromTo(q("[data-big-height]"), { yPercent: 60, opacity: 0 }, { yPercent: -6, opacity: 0.5, duration: 0.55, ease: "none" }, 0.3);
 
       // header fades to ivory text as bg darkens
       tl.to(q("[data-lm-head]"), { color: "oklch(0.929 0.012 85)", duration: 0.3, ease: "none" }, 0.35);
@@ -69,21 +70,21 @@ export function Landmark() {
           01 — The Landmark
         </p>
 
-        {/* oversized 260 behind the tower */}
+        {/* oversized height behind the tower */}
         <div
-          data-big260
+          data-big-height
           aria-hidden="true"
           className="display-serif pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-gold/60"
           style={{ fontSize: "clamp(16rem, 42vw, 42rem)", lineHeight: 1 }}
         >
-          260
+          {TOWER.heightM}
         </div>
 
         {/* the tower */}
         <img
           data-tower
           src={towerCutout}
-          alt="Architectural elevation of VR Vake Sky Tower"
+          alt={`Architectural elevation of ${TOWER.name}`}
           width={768}
           height={1920}
           loading="lazy"
@@ -111,15 +112,15 @@ export function Landmark() {
         {/* mobile stats strip */}
         <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-8 md:hidden">
           <div className="text-center text-ivory">
-            <span className="display-serif block text-2xl">260 M</span>
+            <span className="display-serif block text-2xl">{TOWER.heightM} M</span>
             <span className="tech-label text-[9px] text-ivory/60">Height</span>
           </div>
           <div className="text-center text-ivory">
-            <span className="display-serif block text-2xl">70</span>
+            <span className="display-serif block text-2xl">{TOWER.floors}</span>
             <span className="tech-label text-[9px] text-ivory/60">Floors</span>
           </div>
           <div className="text-center text-ivory">
-            <span className="display-serif block text-2xl">843</span>
+            <span className="display-serif block text-2xl">{TOWER.residences}</span>
             <span className="tech-label text-[9px] text-ivory/60">Residences</span>
           </div>
         </div>

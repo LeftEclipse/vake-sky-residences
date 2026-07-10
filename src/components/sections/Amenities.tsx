@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/gsapSetup";
+import { TOWER } from "@/lib/tower-brand";
 import pool from "@/assets/pool.jpg";
 import dining from "@/assets/dining.jpg";
 import spa from "@/assets/spa.jpg";
@@ -7,7 +8,7 @@ import lounge from "@/assets/lounge.jpg";
 import residenceView from "@/assets/residence-view.jpg";
 
 const CHAPTERS = [
-  { id: "pool", word: "WATER", title: "Infinity Pool", img: pool, text: "An infinity edge suspended 260 metres above the city.", effect: "pan" },
+  { id: "pool", word: "WATER", title: "Infinity Pool", img: pool, text: `An infinity edge suspended ${TOWER.heightM} metres above the city.`, effect: "pan" },
   { id: "dining", word: "TASTE", title: "Signature Dining", img: dining, text: "Two restaurants. One skyline.", effect: "mask" },
   { id: "spa", word: "CALM", title: "Wellness & Spa", img: spa, text: "Thermal pools carved in warm stone.", effect: "panels" },
   { id: "lounge", word: "QUIET", title: "Private Lounges", img: lounge, text: "Rooms that belong only to residents.", effect: "depth" },
@@ -86,9 +87,9 @@ export function Amenities() {
   }, []);
 
   return (
-    <section id="life" aria-label="Life at 260 metres" className="bg-charcoal">
+    <section id="life" aria-label={`Life at ${TOWER.heightM} metres`} className="bg-charcoal">
       <div className="px-6 pb-4 pt-28 md:px-24">
-        <p className="tech-label text-ivory/50">04 — Life at 260 Metres</p>
+        <p className="tech-label text-ivory/50">04 — Life at {TOWER.heightM} Metres</p>
       </div>
 
       <div ref={outerRef} className="overflow-hidden">

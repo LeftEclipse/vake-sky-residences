@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 
-const KEY = "vr-vake-compare";
+const KEY = "aurea-sky-compare";
 const EVT = "vr-compare-change";
 
 function read(): string[] {

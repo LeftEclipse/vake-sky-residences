@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { TOWER } from "@/lib/tower-brand";
 import panorama from "@/assets/panorama.jpg";
 
-/** Interactive "view from your floor" — vertical slider 01–70. */
+/** Interactive "view from your floor" — vertical slider 01–max floor. */
 export function ViewExperience() {
-  const [floor, setFloor] = useState(52);
-  const t = (floor - 1) / 69; // 0..1
-  const height = Math.round(floor * 3.71);
+  const defaultFloor = Math.round(TOWER.floors * 0.75);
+  const [floor, setFloor] = useState(defaultFloor);
+  const t = (floor - 1) / (TOWER.floors - 1); // 0..1
+  const height = Math.round(floor * TOWER.floorHeightM);
 
   return (
     <section id="view" className="relative flex min-h-screen flex-col overflow-hidden bg-midnight text-ivory" aria-labelledby="view-heading">
@@ -49,12 +51,12 @@ export function ViewExperience() {
 
         {/* vertical slider */}
         <div className="relative z-10 flex w-24 flex-col items-center justify-center gap-6 pr-2 md:w-36 md:pr-10">
-          <span className="tech-label text-ivory/50">70</span>
+          <span className="tech-label text-ivory/50">{String(TOWER.floors).padStart(2, "0")}</span>
           <div className="flex h-[46vh] items-center">
             <input
               type="range"
               min={1}
-              max={70}
+              max={TOWER.floors}
               value={floor}
               onChange={(e) => setFloor(Number(e.target.value))}
               className="floor-slider h-[3px] w-[46vh] -rotate-90"

@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { gsap, prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
+import { TOWER } from "@/lib/tower-brand";
 
 const LINKS = [
-  { id: "landmark", label: "The Tower" },
-  { id: "explorer", label: "Residences" },
-  { id: "life", label: "Amenities" },
-  { id: "location", label: "Location" },
-  { id: "contact", label: "Enquire" },
+  { id: "landmark", label: "The Tower", href: "/" as const, hash: "landmark" as const },
+  { id: "residences", label: "Residences", href: "/residences" as const },
+  { id: "life", label: "Amenities", href: "/" as const, hash: "life" as const },
+  { id: "location", label: "Location", href: "/" as const, hash: "location" as const },
+  { id: "contact", label: "Enquire", href: "/" as const, hash: "contact" as const },
 ];
 
-export function Navigation() {
+type NavigationProps = {
+  variant?: "blend" | "dark";
+};
+
+export function Navigation({ variant = "blend" }: NavigationProps) {
   const ref = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -26,32 +31,37 @@ export function Navigation() {
     );
   }, []);
 
-  const go = (id: string) => {
+  const go = (hash?: string) => {
     setOpen(false);
-    if (onHome) scrollToId(id);
+    if (hash && onHome) scrollToId(hash);
   };
 
+  const navClass =
+    variant === "dark"
+      ? "pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6 text-ivory md:px-12"
+      : "pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6 text-ivory mix-blend-difference md:px-12";
+
   return (
-    <nav
-      ref={ref}
-      className="pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6 text-ivory mix-blend-difference md:px-12"
-      aria-label="Main navigation"
-    >
+    <nav ref={ref} className={navClass} aria-label="Main navigation">
       <div data-nav-item className="pointer-events-auto overflow-hidden">
         <Link to="/" className="tech-label text-ivory" data-cursor="">
-          VR — VAKE SKY TOWER
+          {TOWER.nameNav}
         </Link>
       </div>
 
       <div className="hidden items-center gap-8 md:flex">
         {LINKS.map((l) => (
           <div key={l.id} data-nav-item className="pointer-events-auto overflow-hidden">
-            {onHome ? (
-              <button onClick={() => go(l.id)} className="tech-label link-line text-ivory">
+            {l.href === "/residences" ? (
+              <Link to="/residences" className="tech-label link-line text-ivory">
+                {l.label}
+              </Link>
+            ) : onHome && l.hash ? (
+              <button onClick={() => go(l.hash)} className="tech-label link-line text-ivory">
                 {l.label}
               </button>
             ) : (
-              <Link to="/" className="tech-label link-line text-ivory">
+              <Link to={l.href} hash={l.hash} className="tech-label link-line text-ivory">
                 {l.label}
               </Link>
             )}
@@ -77,15 +87,36 @@ export function Navigation() {
           >
             Close
           </button>
-          {LINKS.map((l) => (
-            <button
-              key={l.id}
-              onClick={() => go(l.id)}
-              className="display-serif text-left text-4xl text-ivory"
-            >
-              {l.label}
-            </button>
-          ))}
+          {LINKS.map((l) =>
+            l.href === "/residences" ? (
+              <Link
+                key={l.id}
+                to="/residences"
+                onClick={() => setOpen(false)}
+                className="display-serif text-left text-4xl text-ivory"
+              >
+                {l.label}
+              </Link>
+            ) : onHome && l.hash ? (
+              <button
+                key={l.id}
+                onClick={() => go(l.hash)}
+                className="display-serif text-left text-4xl text-ivory"
+              >
+                {l.label}
+              </button>
+            ) : (
+              <Link
+                key={l.id}
+                to={l.href}
+                hash={l.hash}
+                onClick={() => setOpen(false)}
+                className="display-serif text-left text-4xl text-ivory"
+              >
+                {l.label}
+              </Link>
+            ),
+          )}
         </div>
       )}
     </nav>

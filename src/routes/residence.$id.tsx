@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { parseResidenceId, segmentForFloor } from "@/lib/tower-data";
+import { TOWER } from "@/lib/tower-brand";
 import { useCompare } from "@/lib/compare";
 import { CustomCursor } from "@/components/CustomCursor";
 import { Navigation } from "@/components/Navigation";
@@ -17,11 +18,11 @@ export const Route = createFileRoute("/residence/$id")({
   head: ({ params }) => {
     const r = parseResidenceId(params.id);
     const title = r
-      ? `Residence ${r.floor}.${String(r.unit).padStart(2, "0")} — VR Vake Sky Tower`
-      : "Residence — VR Vake Sky Tower";
+      ? `Residence ${r.floor}.${String(r.unit).padStart(2, "0")} — ${TOWER.name}`
+      : `Residence — ${TOWER.name}`;
     const description = r
-      ? `${r.bedrooms} bedroom residence, ${r.interior} m² interior, floor ${r.floor} of VR Vake Sky Tower, Tbilisi.`
-      : "Luxury residence at VR Vake Sky Tower, Tbilisi.";
+      ? `${r.bedrooms} bedroom residence, ${r.interior} m² interior, floor ${r.floor} of ${TOWER.name}, ${TOWER.city}.`
+      : `Luxury residence at ${TOWER.name}, ${TOWER.city}.`;
     return {
       meta: [
         { title },

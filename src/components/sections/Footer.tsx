@@ -1,3 +1,5 @@
+import { TOWER } from "@/lib/tower-brand";
+
 export function Footer() {
   return (
     <footer className="bg-midnight px-6 py-20 text-ivory md:px-24">
@@ -13,31 +15,35 @@ export function Footer() {
 
       <div className="mt-16 grid grid-cols-1 gap-12 border-t border-ivory/10 pt-14 text-sm sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="tech-label text-gold">VR Vake Sky Tower</p>
+          <p className="tech-label text-gold">{TOWER.name}</p>
           <p className="mt-4 leading-relaxed text-ivory/60">
-            Vake, Tbilisi, Georgia<br />
-            The Future of Urban Living
+            {TOWER.locationLine}
+            <br />
+            {TOWER.tagline}
           </p>
         </div>
         <div>
           <p className="tech-label text-ivory/50">Contact</p>
           <p className="mt-4 leading-relaxed text-ivory/60">
-            sales@vrvakeskytower.ge<br />
-            +995 32 2 000 000
+            {TOWER.salesEmail}
+            <br />
+            {TOWER.salesPhone}
           </p>
         </div>
         <div>
           <p className="tech-label text-ivory/50">Sales Office</p>
           <p className="mt-4 leading-relaxed text-ivory/60">
-            Chavchavadze Avenue<br />
-            Vake, Tbilisi — by appointment
+            {TOWER.salesOfficeStreet}
+            <br />
+            {TOWER.salesOfficeLine}
           </p>
         </div>
         <div>
           <p className="tech-label text-ivory/50">Legal</p>
           <p className="mt-4 leading-relaxed text-ivory/60">
-            All visuals are indicative.<br />
-            © {new Date().getFullYear()} VR Development
+            All visuals are indicative.
+            <br />
+            © {new Date().getFullYear()} {TOWER.developer}
           </p>
         </div>
       </div>

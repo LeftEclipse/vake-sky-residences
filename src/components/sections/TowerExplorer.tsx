@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   SEGMENTS,
   type Segment,
@@ -8,112 +8,9 @@ import {
 } from "@/lib/tower-data";
 import { FloorSelector } from "@/components/tower/FloorSelector";
 import { ResidencePlan } from "@/components/tower/ResidencePlan";
+import { TowerElevation } from "@/components/tower/TowerElevation";
 
 type Stage = "tower" | "floors" | "plan";
-
-/** floor → y coordinate in the 300×800 elevation viewBox */
-export const floorY = (f: number) => 60 + (70 - f) * 9;
-
-function TowerElevation({
-  hovered,
-  onHover,
-  onSelect,
-  highlightFloor,
-  activeSegment,
-}: {
-  hovered: string | null;
-  onHover: (id: string | null) => void;
-  onSelect: (seg: Segment) => void;
-  highlightFloor?: number | null;
-  activeSegment?: Segment | null;
-}) {
-  return (
-    <svg
-      viewBox="0 0 300 800"
-      className="h-full w-auto max-w-full"
-      role="group"
-      aria-label="Tower elevation — select a level"
-    >
-      {/* ground line */}
-      <line x1="0" y1="762" x2="300" y2="762" stroke="oklch(0.929 0.012 85 / 0.25)" strokeWidth="1" />
-      {/* spire */}
-      <line x1="150" y1="18" x2="150" y2="60" stroke="oklch(0.693 0.058 78)" strokeWidth="1.5" />
-      {/* podium */}
-      <rect x="92" y="702" width="116" height="60" fill="oklch(0.929 0.012 85 / 0.08)" stroke="oklch(0.929 0.012 85 / 0.3)" strokeWidth="1" />
-      <text x="222" y="738" className="fill-ivory/40" fontSize="9" letterSpacing="2">LOBBY · 01–05</text>
-
-      {SEGMENTS.map((seg) => {
-        const [lo, hi] = seg.floors;
-        const y = floorY(hi);
-        const h = floorY(lo) + 9 - y;
-        const isHover = hovered === seg.id;
-        const isActive = activeSegment?.id === seg.id;
-        const dimmed = (hovered !== null && !isHover) || (activeSegment && !isActive);
-        return (
-          <g key={seg.id}>
-            <rect
-              x="108"
-              y={y}
-              width="84"
-              height={h}
-              fill={
-                isHover || isActive
-                  ? "oklch(0.693 0.058 78 / 0.55)"
-                  : "oklch(0.929 0.012 85 / 0.1)"
-              }
-              stroke={isHover || isActive ? "oklch(0.693 0.058 78)" : "oklch(0.929 0.012 85 / 0.35)"}
-              strokeWidth="1"
-              opacity={dimmed ? 0.35 : 1}
-              className="cursor-pointer transition-all duration-500"
-              data-cursor="SELECT"
-              tabIndex={0}
-              role="button"
-              aria-label={`${seg.name}, floors ${lo} to ${hi}`}
-              onMouseEnter={() => onHover(seg.id)}
-              onMouseLeave={() => onHover(null)}
-              onClick={() => onSelect(seg)}
-              onKeyDown={(e) => e.key === "Enter" && onSelect(seg)}
-            />
-            {/* floor ticks */}
-            {Array.from({ length: Math.floor((hi - lo) / 4) + 1 }, (_, i) => lo + i * 4).map((f) => (
-              <line
-                key={f}
-                x1="108"
-                y1={floorY(f)}
-                x2="192"
-                y2={floorY(f)}
-                stroke="oklch(0.929 0.012 85 / 0.12)"
-                strokeWidth="0.5"
-                pointerEvents="none"
-              />
-            ))}
-            {/* guide line on hover */}
-            {isHover && (
-              <g pointerEvents="none">
-                <line x1="192" y1={y + h / 2} x2="286" y2={y + h / 2} stroke="oklch(0.693 0.058 78)" strokeWidth="1" />
-                <text x="286" y={y + h / 2 - 8} textAnchor="end" className="fill-ivory" fontSize="11" letterSpacing="2">
-                  {String(lo).padStart(2, "0")}–{hi}
-                </text>
-              </g>
-            )}
-          </g>
-        );
-      })}
-
-      {/* highlighted floor band while choosing floors */}
-      {highlightFloor != null && (
-        <rect
-          x="104"
-          y={floorY(highlightFloor)}
-          width="92"
-          height="9"
-          fill="oklch(0.693 0.058 78)"
-          pointerEvents="none"
-        />
-      )}
-    </svg>
-  );
-}
 
 export function TowerExplorer() {
   const [stage, setStage] = useState<Stage>("tower");
@@ -132,7 +29,16 @@ export function TowerExplorer() {
   return (
     <section id="explorer" className="relative min-h-screen bg-midnight text-ivory" aria-labelledby="explorer-heading">
       <div className="flex flex-col px-6 pb-24 pt-28 md:px-24">
-        <p className="tech-label text-ivory/50">03 — Find Your Residence</p>
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <p className="tech-label text-ivory/50">03 — Find Your Residence</p>
+          <Link
+            to="/residences"
+            className="btn-fill-gold tech-label self-start border border-gold px-8 py-4 text-ivory transition-colors duration-500 hover:text-midnight"
+            data-cursor="SELECT"
+          >
+            View All Residences & Prices
+          </Link>
+        </div>
 
         {/* breadcrumbs */}
         <nav aria-label="Selection path" className="mt-6 flex flex-wrap items-center gap-3">

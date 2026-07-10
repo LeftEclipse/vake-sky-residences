@@ -1,3 +1,5 @@
+import { TOWER } from "@/lib/tower-brand";
+
 export interface Segment {
   id: string;
   name: string;
@@ -9,25 +11,25 @@ export const SEGMENTS: Segment[] = [
   {
     id: "crown",
     name: "The Crown",
-    floors: [58, 70],
+    floors: [52, TOWER.floors],
     description: "Penthouse collection beneath the crown. Full-floor and half-floor residences.",
   },
   {
     id: "sky",
     name: "Sky Residences",
-    floors: [40, 57],
-    description: "Panoramic residences above 148 metres, with wraparound terraces.",
+    floors: [36, 51],
+    description: "Panoramic residences above 127 metres, with wraparound terraces.",
   },
   {
     id: "panorama",
     name: "Panorama Collection",
-    floors: [22, 39],
-    description: "Two and three bedroom residences overlooking Vake Park.",
+    floors: [20, 35],
+    description: "Two and three bedroom residences with sweeping city views.",
   },
   {
     id: "garden",
     name: "Garden Residences",
-    floors: [6, 21],
+    floors: [TOWER.minFloor, 19],
     description: "Residences above the podium gardens, business and wellness levels.",
   },
 ];
@@ -93,7 +95,7 @@ export function getResidence(floor: number, idx: number): Residence {
     interior: layout.interior,
     terrace: layout.terrace,
     orientation: layout.orientation,
-    heightM: Math.round(floor * 3.71),
+    heightM: Math.round(floor * TOWER.floorHeightM),
   };
 }
 
@@ -102,7 +104,7 @@ export function parseResidenceId(id: string): Residence | null {
   if (!m) return null;
   const floor = Number(m[1]);
   const unit = Number(m[2]);
-  if (floor < 6 || floor > 70 || unit < 1 || unit > UNIT_LAYOUTS.length) return null;
+  if (floor < TOWER.minFloor || floor > TOWER.floors || unit < 1 || unit > UNIT_LAYOUTS.length) return null;
   return getResidence(floor, unit - 1);
 }
 

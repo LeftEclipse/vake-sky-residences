@@ -1,15 +1,16 @@
 import { useState } from "react";
+import { TOWER } from "@/lib/tower-brand";
 import aerialNight from "@/assets/aerial-night.jpg";
 
 const PLACES = [
-  { id: "vake-park", label: "Vake Park", time: "3 min", x: 310, y: 300 },
-  { id: "turtle-lake", label: "Turtle Lake", time: "9 min", x: 180, y: 420 },
-  { id: "centre", label: "City Centre", time: "12 min", x: 590, y: 240 },
-  { id: "business", label: "Business District", time: "10 min", x: 560, y: 420 },
-  { id: "culture", label: "Cultural Landmarks", time: "14 min", x: 660, y: 330 },
+  { id: "lisi-lake", label: "Lisi Lake", time: "8 min", x: 180, y: 420 },
+  { id: "universities", label: "Universities", time: "5 min", x: 560, y: 420 },
+  { id: "centre", label: "City Centre", time: "14 min", x: 590, y: 240 },
+  { id: "business", label: "Business District", time: "12 min", x: 660, y: 330 },
+  { id: "culture", label: "Cultural Landmarks", time: "16 min", x: 310, y: 300 },
 ];
 
-const TOWER = { x: 400, y: 330 };
+const TOWER_MARKER = { x: 400, y: 330 };
 
 export function LocationSection() {
   const [active, setActive] = useState<string | null>(null);
@@ -19,13 +20,13 @@ export function LocationSection() {
       <div className="px-6 md:px-24">
         <p className="tech-label text-ivory/50">06 — Location</p>
         <h2 id="location-heading" className="display-serif mt-4 max-w-3xl text-4xl md:text-6xl">
-          Vake. The most <span className="italic text-gold">private address</span> in Tbilisi.
+          {TOWER.district}. A refined <span className="italic text-gold">address</span> in Tbilisi.
         </h2>
       </div>
 
       {/* stylised architectural map */}
       <div className="mt-16 px-6 md:px-24">
-        <svg viewBox="0 0 800 560" className="w-full border border-ivory/10" role="group" aria-label="Stylised map of Vake and Tbilisi">
+        <svg viewBox="0 0 800 560" className="w-full border border-ivory/10" role="group" aria-label="Stylised map of central Tbilisi">
           {/* abstract street grid */}
           <g stroke="oklch(0.929 0.012 85 / 0.08)" strokeWidth="1">
             {[80, 160, 240, 330, 410, 500].map((y) => (
@@ -44,8 +45,8 @@ export function LocationSection() {
           {PLACES.map((p) => (
             <line
               key={p.id}
-              x1={TOWER.x}
-              y1={TOWER.y}
+              x1={TOWER_MARKER.x}
+              y1={TOWER_MARKER.y}
               x2={p.x}
               y2={p.y}
               stroke="oklch(0.693 0.058 78)"
@@ -61,9 +62,9 @@ export function LocationSection() {
 
           {/* tower marker */}
           <g>
-            <rect x={TOWER.x - 7} y={TOWER.y - 7} width="14" height="14" fill="oklch(0.693 0.058 78)" transform={`rotate(45 ${TOWER.x} ${TOWER.y})`} />
-            <text x={TOWER.x} y={TOWER.y - 20} textAnchor="middle" className="fill-ivory" fontSize="12" letterSpacing="3">
-              VR VAKE SKY TOWER
+            <rect x={TOWER_MARKER.x - 7} y={TOWER_MARKER.y - 7} width="14" height="14" fill="oklch(0.693 0.058 78)" transform={`rotate(45 ${TOWER_MARKER.x} ${TOWER_MARKER.y})`} />
+            <text x={TOWER_MARKER.x} y={TOWER_MARKER.y - 20} textAnchor="middle" className="fill-ivory" fontSize="12" letterSpacing="3">
+              {TOWER.nameUpper}
             </text>
           </g>
 

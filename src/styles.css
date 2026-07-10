@@ -44,7 +44,7 @@
 :root {
   --radius: 0rem;
 
-  /* VR VAKE SKY TOWER palette (oklch) */
+  /* Aurea Sky Tower palette (oklch) */
   --midnight: oklch(0.22 0.033 262);        /* #101726 */
   --midnight-soft: oklch(0.27 0.033 262);
   --dusk: oklch(0.38 0.045 262);

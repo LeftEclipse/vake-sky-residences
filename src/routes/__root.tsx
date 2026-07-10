@@ -7,10 +7,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { TOWER } from "../lib/tower-brand";
 
 function NotFoundComponent() {
   return (
@@ -37,9 +37,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -77,18 +74,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "VR Vake Sky Tower — The Future of Urban Living" },
+      { title: `${TOWER.name} — ${TOWER.tagline}` },
       {
         name: "description",
         content:
-          "A 260-metre landmark of 843 luxury residences in Vake, Tbilisi. Panoramic views, infinity pool, signature dining and an interactive residence selector.",
+          `A ${TOWER.heightM}-metre landmark of ${TOWER.residences} luxury residences in ${TOWER.district}, ${TOWER.city}. Panoramic views, infinity pool, signature dining and an interactive residence selector.`,
       },
-      { name: "author", content: "VR Development" },
-      { property: "og:title", content: "VR Vake Sky Tower — The Future of Urban Living" },
+      { name: "author", content: TOWER.developer },
+      { property: "og:title", content: `${TOWER.name} — ${TOWER.tagline}` },
       {
         property: "og:description",
         content:
-          "A 260-metre landmark of 843 luxury residences in Vake, Tbilisi, Georgia.",
+          `A ${TOWER.heightM}-metre landmark of ${TOWER.residences} luxury residences in ${TOWER.district}, ${TOWER.city}, ${TOWER.country}.`,
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

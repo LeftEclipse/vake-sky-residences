@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TOWER } from "@/lib/tower-brand";
 import { AnimatedText } from "@/components/motion/AnimatedText";
 import { ParallaxImage } from "@/components/motion/ParallaxImage";
 import interiorLiving from "@/assets/interior-living.jpg";
@@ -10,11 +11,11 @@ import facadeDetail from "@/assets/facade-detail.jpg";
 import lobby from "@/assets/lobby.jpg";
 
 const LAYERS = [
-  { id: "residences", label: "Residences", img: interiorLiving, desc: "843 homes from one to four bedrooms, floors 6 to 70." },
+  { id: "residences", label: "Residences", img: interiorLiving, desc: `${TOWER.residences} homes from one to four bedrooms, floors ${TOWER.minFloor} to ${TOWER.floors}.` },
   { id: "business", label: "Business", img: business, desc: "Private offices and meeting suites on dedicated levels." },
   { id: "dining", label: "Dining", img: dining, desc: "Signature restaurants with the city at your feet." },
   { id: "wellness", label: "Wellness", img: spa, desc: "Spa, thermal pools and a private training club." },
-  { id: "skypool", label: "Sky Pool", img: pool, desc: "An infinity edge, 260 metres above Tbilisi." },
+  { id: "skypool", label: "Sky Pool", img: pool, desc: `An infinity edge, ${TOWER.heightM} metres above Tbilisi.` },
 ];
 
 export function VerticalCity() {

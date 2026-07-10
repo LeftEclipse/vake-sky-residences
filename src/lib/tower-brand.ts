@@ -1,0 +1,21 @@
+/** Fictional tower identity — not affiliated with any real development. */
+export const TOWER = {
+  name: "Aurea Sky Tower",
+  nameUpper: "AUREA SKY TOWER",
+  nameNav: "AUREA — SKY TOWER",
+  tagline: "The Future of Urban Living",
+  developer: "Aurea Development",
+  heightM: 218,
+  floors: 62,
+  minFloor: 6,
+  residences: 576,
+  floorHeightM: 3.52,
+  district: "Saburtalo",
+  city: "Tbilisi",
+  country: "Georgia",
+  locationLine: "Saburtalo, Tbilisi, Georgia",
+  salesEmail: "inquiries@aureasky.demo",
+  salesPhone: "+995 555 12 34 56",
+  salesOfficeStreet: "Kostava Street",
+  salesOfficeLine: "Saburtalo, Tbilisi — by appointment",
+} as const;

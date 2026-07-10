@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
 import { MagneticButton } from "@/components/motion/MagneticButton";
+import { TOWER } from "@/lib/tower-brand";
 import heroTower from "@/assets/hero-tower.jpg";
 
 export function Hero() {
@@ -43,7 +44,7 @@ export function Hero() {
       <img
         ref={imgRef}
         src={heroTower}
-        alt="VR Vake Sky Tower rising above Tbilisi at dusk"
+        alt={`${TOWER.name} rising above Tbilisi at dusk`}
         width={1920}
         height={1280}
         className="absolute inset-0 h-full w-full object-cover object-[62%_20%] will-change-transform"
@@ -62,8 +63,8 @@ export function Hero() {
         className="display-serif absolute bottom-[16vh] left-6 z-10 text-ivory md:left-24"
         style={{ fontSize: "clamp(4.5rem, 13vw, 13rem)" }}
       >
-        <span className="block overflow-hidden"><span className="block will-change-transform">VR</span></span>
-        <span className="block overflow-hidden -mt-[0.12em]"><span className="block will-change-transform">VAKE</span></span>
+        <span className="block overflow-hidden"><span className="block will-change-transform">AUREA</span></span>
+        <span className="block overflow-hidden -mt-[0.12em]"><span className="block will-change-transform">SKY</span></span>
         <span className="block overflow-hidden -mt-[0.12em]">
           <span className="block whitespace-nowrap italic will-change-transform" style={{ fontSize: "0.42em", letterSpacing: "0.04em" }}>
             Sky Tower
@@ -75,11 +76,13 @@ export function Hero() {
       <div className="absolute bottom-[16vh] right-6 z-10 hidden flex-col items-end gap-5 text-ivory md:right-24 md:flex">
         <p data-hero-label className="tech-label">The Future of Urban Living</p>
         <p data-hero-label className="tech-label text-ivory/60">Tbilisi — Georgia</p>
-        <p data-hero-label className="tech-label text-gold">260 M / 70 Floors / 843 Residences</p>
+        <p data-hero-label className="tech-label text-gold">
+          {TOWER.heightM} M / {TOWER.floors} Floors / {TOWER.residences} Residences
+        </p>
       </div>
 
       <p data-hero-label className="tech-label absolute bottom-8 left-6 z-10 text-ivory/60 md:left-24">
-        Vake District
+        {TOWER.district} District
       </p>
 
       {/* circular explore */}
