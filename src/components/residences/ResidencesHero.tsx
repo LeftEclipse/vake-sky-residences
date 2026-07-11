@@ -76,16 +76,17 @@ export function ResidencesHero({ onViewPrices }: ResidencesHeroProps) {
   }, []);
 
   return (
-    <header ref={rootRef} className="sticky top-0 z-0 h-screen overflow-hidden bg-midnight">
+    <header ref={rootRef} className="sticky top-0 z-0 min-h-[100svh] overflow-hidden bg-midnight md:h-screen">
       <img
         ref={imgRef}
         src={aerialNight}
         alt={`Aerial view of ${TOWER.name}`}
         width={1920}
         height={1080}
-        className="absolute inset-0 h-full w-full object-cover will-change-transform"
+        className="absolute inset-x-0 top-0 h-[40svh] w-full object-cover object-[center_15%] will-change-transform md:inset-0 md:h-full md:object-center"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/50 to-midnight/25" />
+      <div className="absolute inset-x-0 top-0 h-[40svh] bg-gradient-to-b from-midnight/20 via-transparent to-midnight md:hidden" />
+      <div className="absolute inset-0 hidden bg-gradient-to-t from-midnight via-midnight/50 to-midnight/25 md:block" />
       <div
         data-rh-overlay
         className="pointer-events-none absolute inset-0 z-20 bg-midnight opacity-0"
@@ -93,70 +94,74 @@ export function ResidencesHero({ onViewPrices }: ResidencesHeroProps) {
 
       <div
         data-rh-line
-        className="absolute left-6 top-0 h-full w-px origin-top bg-ivory/25 md:left-24"
+        className="absolute left-24 top-0 hidden h-full w-px origin-top bg-ivory/25 md:block"
       />
 
       <div
         data-rh-content
-        className="relative z-10 flex h-full flex-col justify-end px-6 pb-16 pt-36 md:px-24 md:pb-24"
+        className="relative z-10 flex min-h-[100svh] flex-col md:h-full md:justify-end md:px-24 md:pb-24 md:pt-36"
       >
-        <p data-rh-label className="tech-label text-ivory/60">
-          Residences
-        </p>
+        <div className="mt-[40svh] flex flex-1 flex-col bg-midnight px-6 pb-16 pt-10 md:mt-0 md:flex-none md:bg-transparent md:p-0">
+          <p data-rh-label className="tech-label text-ivory/60">
+            Residences
+          </p>
 
-        <h1
-          data-rh-title
-          className="display-serif mt-6 max-w-4xl text-ivory"
-          style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}
-        >
-          <span className="block overflow-hidden">
-            <span className="block will-change-transform">Choose your</span>
-          </span>
-          <span className="block overflow-hidden -mt-[0.08em]">
-            <span className="block will-change-transform">residence</span>
-          </span>
-          <span className="block overflow-hidden -mt-[0.08em]">
-            <span className="block italic text-gold will-change-transform">above the city.</span>
-          </span>
-        </h1>
-
-        <p data-rh-label className="mt-6 max-w-xl text-sm leading-relaxed text-ivory/70">
-          Explore all four collections, select a floor, and view the interactive floor plan.
-          Compare layouts, orientations, and pricing across {TOWER.residences} residences.
-        </p>
-
-        <div className="mt-10 flex flex-wrap gap-3">
-          {SEGMENTS.map((seg) => (
-            <span
-              key={seg.id}
-              data-rh-chip
-              className="tech-label border border-ivory/25 bg-midnight/50 px-4 py-2 backdrop-blur-sm"
-            >
-              {seg.name} · {seg.floors[0]}–{seg.floors[1]}
+          <h1
+            data-rh-title
+            className="display-serif mt-4 max-w-4xl text-ivory md:mt-6"
+            style={{ fontSize: "clamp(2.5rem, 9vw, 7rem)" }}
+          >
+            <span className="block overflow-hidden">
+              <span className="block will-change-transform">Choose your</span>
             </span>
-          ))}
-        </div>
+            <span className="block overflow-hidden -mt-[0.08em]">
+              <span className="block will-change-transform">residence</span>
+            </span>
+            <span className="block overflow-hidden -mt-[0.08em]">
+              <span className="block italic text-ivory will-change-transform md:text-gold">
+                above the city.
+              </span>
+            </span>
+          </h1>
 
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <div data-rh-cta>
-            <MagneticButton
-              onClick={onViewPrices}
-              cursorLabel="SELECT"
-              className="btn-fill-gold tech-label border border-gold px-10 py-4 text-ivory transition-colors duration-500 hover:text-midnight"
-              strength={0.4}
-            >
-              View Price List
-            </MagneticButton>
+          <p data-rh-label className="mt-5 max-w-xl text-sm leading-relaxed text-ivory/75 md:mt-6 md:text-ivory/70">
+            Explore all four collections, select a floor, and view the interactive floor plan.
+            Compare layouts, orientations, and pricing across {TOWER.residences} residences.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-2 md:mt-10 md:flex-row md:flex-wrap md:gap-3">
+            {SEGMENTS.map((seg) => (
+              <span
+                key={seg.id}
+                data-rh-chip
+                className="tech-label border border-ivory/15 bg-midnight-soft px-4 py-3 md:border-ivory/25 md:bg-midnight/50 md:py-2 md:backdrop-blur-sm"
+              >
+                {seg.name} · {seg.floors[0]}–{seg.floors[1]}
+              </span>
+            ))}
           </div>
-          <div data-rh-cta>
-            <MagneticButton
-              onClick={() => scrollToId("selector")}
-              cursorLabel="EXPLORE"
-              className="btn-fill tech-label border border-ivory/40 px-10 py-4 text-ivory transition-colors duration-500 hover:text-midnight"
-              strength={0.4}
-            >
-              Start Selecting
-            </MagneticButton>
+
+          <div className="mt-8 flex flex-col gap-3 md:mt-10 md:flex-row md:flex-wrap md:items-center md:gap-4">
+            <div data-rh-cta className="w-full md:w-auto">
+              <MagneticButton
+                onClick={onViewPrices}
+                cursorLabel="SELECT"
+                className="btn-fill-gold tech-label w-full border border-gold px-10 py-4 text-center text-ivory transition-colors duration-500 hover:text-midnight md:w-auto"
+                strength={0.4}
+              >
+                View Price List
+              </MagneticButton>
+            </div>
+            <div data-rh-cta className="w-full md:w-auto">
+              <MagneticButton
+                onClick={() => scrollToId("selector")}
+                cursorLabel="EXPLORE"
+                className="btn-fill tech-label w-full border border-ivory/40 px-10 py-4 text-center text-ivory transition-colors duration-500 hover:text-midnight md:w-auto"
+                strength={0.4}
+              >
+                Start Selecting
+              </MagneticButton>
+            </div>
           </div>
         </div>
       </div>
