@@ -35,7 +35,7 @@ export function VerticalCity() {
       <div className="mt-24 grid grid-cols-1 gap-16 px-6 md:mt-36 md:grid-cols-12 md:px-24">
         {/* sticky main image, swaps on hover */}
         <div className="relative md:col-span-6">
-          <div className="sticky top-28 aspect-[4/3] overflow-hidden">
+          <div className="relative aspect-[4/3] overflow-hidden md:sticky md:top-28">
             {LAYERS.map((l, i) => (
               <img
                 key={l.id}

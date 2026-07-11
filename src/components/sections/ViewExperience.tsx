@@ -10,7 +10,7 @@ export function ViewExperience() {
   const height = Math.round(floor * TOWER.floorHeightM);
 
   return (
-    <section id="view" className="relative flex min-h-screen flex-col overflow-hidden bg-midnight text-ivory" aria-labelledby="view-heading">
+    <section id="view" className="relative flex min-h-dvh flex-col overflow-hidden bg-midnight text-ivory" aria-labelledby="view-heading">
       <div className="z-10 px-6 pt-28 md:px-24">
         <p className="tech-label text-ivory/50">05 — The View</p>
         <h2 id="view-heading" className="display-serif mt-4 text-4xl md:text-6xl">
@@ -18,7 +18,7 @@ export function ViewExperience() {
         </h2>
       </div>
 
-      <div className="relative mt-10 flex flex-1 items-stretch">
+      <div className="relative mt-10 flex flex-1 flex-col items-stretch md:flex-row">
         {/* panorama */}
         <div className="absolute inset-0 overflow-hidden">
           <img
@@ -27,7 +27,7 @@ export function ViewExperience() {
             loading="lazy"
             width={1920}
             height={1080}
-            className="h-full w-full object-cover transition-transform duration-700 ease-out will-change-transform"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out"
             style={{
               transform: `scale(${1.28 - t * 0.24}) translateY(${(1 - t) * 4}%)`,
             }}
@@ -41,30 +41,50 @@ export function ViewExperience() {
         </div>
 
         {/* readout */}
-        <div className="relative z-10 flex flex-1 flex-col justify-end px-6 pb-16 md:px-24 md:pb-24">
-          <p className="display-serif text-7xl md:text-[10rem]" style={{ lineHeight: 0.9 }}>
+        <div className="relative z-10 flex flex-1 flex-col justify-end px-6 pb-36 md:px-24 md:pb-24">
+          <p className="display-serif text-6xl md:text-[10rem]" style={{ lineHeight: 0.9 }}>
             <span className="tech-label mr-4 align-super text-ivory/60">Floor</span>
             {String(floor).padStart(2, "0")}
           </p>
           <p className="tech-label mt-4 text-gold">Approx. {height} m above Tbilisi</p>
         </div>
 
-        {/* vertical slider */}
-        <div className="relative z-10 flex w-24 flex-col items-center justify-center gap-6 pr-2 md:w-36 md:pr-10">
+        {/* desktop: vertical slider */}
+        <div className="relative z-10 hidden w-36 flex-col items-center justify-center gap-6 pr-10 md:flex">
           <span className="tech-label text-ivory/50">{String(TOWER.floors).padStart(2, "0")}</span>
-          <div className="flex h-[46vh] items-center">
+          <div className="flex h-[46dvh] items-center">
             <input
               type="range"
               min={1}
               max={TOWER.floors}
               value={floor}
               onChange={(e) => setFloor(Number(e.target.value))}
-              className="floor-slider h-[3px] w-[46vh] -rotate-90"
+              className="floor-slider h-[3px] w-[46dvh] -rotate-90"
               aria-label="Choose a floor to preview the view"
               data-cursor="DRAG"
             />
           </div>
           <span className="tech-label text-ivory/50">01</span>
+        </div>
+
+        {/* mobile: horizontal slider pinned to bottom */}
+        <div className="absolute inset-x-0 bottom-0 z-10 px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:hidden">
+          <div className="rounded-sm border border-ivory/15 bg-midnight/80 px-5 py-4 backdrop-blur-sm">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="tech-label text-ivory/50">01</span>
+              <span className="tech-label text-gold">Drag to change floor</span>
+              <span className="tech-label text-ivory/50">{String(TOWER.floors).padStart(2, "0")}</span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={TOWER.floors}
+              value={floor}
+              onChange={(e) => setFloor(Number(e.target.value))}
+              className="floor-slider w-full"
+              aria-label="Choose a floor to preview the view"
+            />
+          </div>
         </div>
       </div>
     </section>

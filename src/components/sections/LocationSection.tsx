@@ -77,10 +77,13 @@ export function LocationSection() {
                 className="cursor-pointer"
                 onMouseEnter={() => setActive(p.id)}
                 onMouseLeave={() => setActive(null)}
+                onClick={() => setActive((prev) => (prev === p.id ? null : p.id))}
                 onFocus={() => setActive(p.id)}
+                onBlur={() => setActive(null)}
                 tabIndex={0}
                 role="button"
                 aria-label={`${p.label}, ${p.time} away`}
+                aria-pressed={isActive}
                 data-cursor="VIEW"
               >
                 <circle
@@ -103,7 +106,7 @@ export function LocationSection() {
       </div>
 
       {/* cinematic aerial with floating labels */}
-      <div className="relative mt-24 h-[70vh] overflow-hidden md:mx-24">
+      <div className="relative mt-24 h-[50dvh] min-h-[18rem] overflow-hidden md:mx-24 md:h-[70dvh]">
         <img
           src={aerialNight}
           alt="Aerial dusk view of Tbilisi with the illuminated tower"

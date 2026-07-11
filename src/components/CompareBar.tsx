@@ -7,7 +7,7 @@ export function CompareBar() {
   if (ids.length === 0) return null;
 
   return (
-    <div className="fixed bottom-0 left-1/2 z-40 flex w-full max-w-2xl -translate-x-1/2 items-center justify-between gap-4 border-t border-gold/40 bg-midnight/95 px-6 py-4 text-ivory backdrop-blur-sm md:bottom-6 md:border">
+    <div className="fixed bottom-0 left-1/2 z-40 flex w-full max-w-2xl -translate-x-1/2 items-center justify-between gap-4 border-t border-gold/40 bg-midnight/95 px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-ivory backdrop-blur-sm md:bottom-6 md:border md:pb-4">
       <span className="tech-label text-gold">Compare</span>
       <div className="flex flex-1 flex-wrap items-center gap-4">
         {ids.map((id) => {

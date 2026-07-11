@@ -37,7 +37,7 @@ export function Landmark() {
       tl.fromTo(q("[data-tower]"), { yPercent: 42, scale: 0.94 }, { yPercent: 0, scale: 1, duration: 1, ease: "none" }, 0);
 
       // giant height number drifting behind at a different speed
-      tl.fromTo(q("[data-big-height]"), { yPercent: 60, opacity: 0 }, { yPercent: -6, opacity: 0.5, duration: 0.55, ease: "none" }, 0.3);
+      tl.fromTo(q("[data-big-height]"), { yPercent: 60, opacity: 0 }, { yPercent: -6, opacity: 1, duration: 0.55, ease: "none" }, 0.3);
 
       // header fades to ivory text as bg darkens
       tl.to(q("[data-lm-head]"), { color: "oklch(0.929 0.012 85)", duration: 0.3, ease: "none" }, 0.35);
@@ -61,10 +61,10 @@ export function Landmark() {
   }, []);
 
   return (
-    <div id="landmark" ref={outerRef} className="relative h-[420vh]">
+    <div id="landmark" ref={outerRef} className="relative h-[220vh] md:h-[420vh]">
       <div
         ref={stageRef}
-        className="sticky top-0 flex h-screen items-end justify-center overflow-hidden bg-ivory"
+        className="sticky top-0 flex h-dvh items-end justify-center overflow-hidden bg-ivory"
       >
         <p data-lm-head className="tech-label absolute left-6 top-24 text-charcoal md:left-24">
           01 — The Landmark
@@ -74,10 +74,10 @@ export function Landmark() {
         <div
           data-big-height
           aria-hidden="true"
-          className="display-serif pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-gold/60"
-          style={{ fontSize: "clamp(16rem, 42vw, 42rem)", lineHeight: 1 }}
+          className="pointer-events-none absolute left-1/2 top-[46%] z-[5] flex -translate-x-1/2 -translate-y-1/2 select-none items-end gap-2 md:gap-4"
         >
-          {TOWER.heightM}
+         
+          <span className="tech-label mb-[0.15em] text-gold/70 md:mb-[0.2em]">Metres</span>
         </div>
 
         {/* the tower */}
@@ -88,7 +88,7 @@ export function Landmark() {
           width={768}
           height={1920}
           loading="lazy"
-          className="relative z-10 h-[92vh] w-auto object-contain will-change-transform"
+          className="relative z-10 h-[78dvh] w-auto object-contain will-change-transform md:h-[92dvh] md:will-change-auto"
         />
 
         {/* stats pinned at heights */}
@@ -110,18 +110,22 @@ export function Landmark() {
         ))}
 
         {/* mobile stats strip */}
-        <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-8 md:hidden">
-          <div className="text-center text-ivory">
-            <span className="display-serif block text-2xl">{TOWER.heightM} M</span>
-            <span className="tech-label text-[9px] text-ivory/60">Height</span>
-          </div>
-          <div className="text-center text-ivory">
-            <span className="display-serif block text-2xl">{TOWER.floors}</span>
-            <span className="tech-label text-[9px] text-ivory/60">Floors</span>
-          </div>
-          <div className="text-center text-ivory">
-            <span className="display-serif block text-2xl">{TOWER.residences}</span>
-            <span className="tech-label text-[9px] text-ivory/60">Residences</span>
+        <div className="absolute inset-x-0 bottom-0 z-20 md:hidden">
+          <div className="bg-gradient-to-t from-midnight via-midnight/95 to-transparent px-4 pb-8 pt-20">
+            <div className="mx-auto flex max-w-sm justify-between gap-4 rounded-sm border border-ivory/10 bg-midnight/75 px-5 py-4 backdrop-blur-sm">
+              <div className="text-center text-ivory">
+                <span className="display-serif block text-2xl">{TOWER.heightM} M</span>
+                <span className="tech-label text-[9px] text-gold/80">Height</span>
+              </div>
+              <div className="text-center text-ivory">
+                <span className="display-serif block text-2xl">{TOWER.floors}</span>
+                <span className="tech-label text-[9px] text-gold/80">Floors</span>
+              </div>
+              <div className="text-center text-ivory">
+                <span className="display-serif block text-2xl">{TOWER.residences}</span>
+                <span className="tech-label text-[9px] text-gold/80">Residences</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

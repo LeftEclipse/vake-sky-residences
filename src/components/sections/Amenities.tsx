@@ -9,8 +9,8 @@ import residenceView from "@/assets/residence-view.jpg";
 
 const CHAPTERS = [
   { id: "pool", word: "WATER", title: "Infinity Pool", img: pool, text: `An infinity edge suspended ${TOWER.heightM} metres above the city.`, effect: "pan" },
-  { id: "dining", word: "TASTE", title: "Signature Dining", img: dining, text: "Two restaurants. One skyline.", effect: "mask" },
-  { id: "spa", word: "CALM", title: "Wellness & Spa", img: spa, text: "Thermal pools carved in warm stone.", effect: "panels" },
+  { id: "dining", word: "TASTE", title: "Signature Dining", img: dining, text: "Two restaurants. One skyline.", effect: "static" },
+  { id: "spa", word: "CALM", title: "Wellness & Spa", img: spa, text: "Thermal pools carved in warm stone.", effect: "static" },
   { id: "lounge", word: "QUIET", title: "Private Lounges", img: lounge, text: "Rooms that belong only to residents.", effect: "depth" },
   { id: "residences", word: "LIGHT", title: "Panoramic Residences", img: residenceView, text: "Corner glass. Morning haze. The city below.", effect: "depth2" },
 ];
@@ -59,20 +59,7 @@ export function Amenities() {
             objectPosition: "70% 50%", ease: "none",
             scrollTrigger: { trigger: panel, containerAnimation: move, start: "left right", end: "right left", scrub: true },
           });
-        } else if (effect === "mask") {
-          gsap.fromTo(img.parentElement, { clipPath: "inset(0% 38% 0% 38%)" }, {
-            clipPath: "inset(0% 0% 0% 0%)", ease: "none",
-            scrollTrigger: { trigger: panel, containerAnimation: move, start: "left 85%", end: "left 15%", scrub: true },
-          });
-        } else if (effect === "panels") {
-          const strips = panel.querySelectorAll("[data-strip]");
-          strips.forEach((s, i) => {
-            gsap.fromTo(s, { yPercent: i % 2 === 0 ? 14 : -14 }, {
-              yPercent: 0, ease: "none",
-              scrollTrigger: { trigger: panel, containerAnimation: move, start: "left right", end: "left 20%", scrub: true },
-            });
-          });
-        } else {
+        } else if (effect !== "static") {
           gsap.fromTo(img, { scale: 1.15 }, {
             scale: 1, ease: "none",
             scrollTrigger: { trigger: panel, containerAnimation: move, start: "left right", end: "right left", scrub: true },
@@ -98,37 +85,18 @@ export function Amenities() {
             <article
               key={c.id}
               data-chapter={c.effect}
-              className="relative flex h-[80vh] w-full shrink-0 items-center justify-center overflow-hidden md:h-screen md:w-screen"
+              className="relative flex h-[62dvh] min-h-[22rem] w-full shrink-0 items-center justify-center overflow-hidden md:h-screen md:w-screen"
             >
-              {c.effect === "panels" ? (
-                <div className="absolute inset-0 flex">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} data-strip className="h-full w-1/3 overflow-hidden will-change-transform">
-                      <img
-                        src={c.img}
-                        alt=""
-                        aria-hidden="true"
-                        loading="lazy"
-                        width={1920}
-                        height={1080}
-                        className="h-full w-[300%] max-w-none object-cover"
-                        style={{ transform: `translateX(-${i * 100}%)` }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="absolute inset-0 overflow-hidden" style={{ willChange: "clip-path" }}>
-                  <img
-                    src={c.img}
-                    alt={c.title}
-                    loading="lazy"
-                    width={1920}
-                    height={1080}
-                    className="h-full w-full object-cover will-change-transform"
-                  />
-                </div>
-              )}
+              <div className="absolute inset-0 overflow-hidden">
+                <img
+                  src={c.img}
+                  alt={c.title}
+                  loading="lazy"
+                  width={1920}
+                  height={1080}
+                  className="h-full w-full object-cover will-change-transform"
+                />
+              </div>
               <div className="absolute inset-0 bg-midnight/35" />
 
               <h3

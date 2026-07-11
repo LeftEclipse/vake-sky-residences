@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useGsap } from "@/hooks/useGsap";
 import { prefersReducedMotion, scrollToId } from "@/lib/gsapSetup";
@@ -37,10 +38,19 @@ export function Navigation({ variant = "blend" }: NavigationProps) {
     if (hash && onHome) scrollToId(hash);
   };
 
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   const navClass =
     variant === "dark"
       ? "pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6 text-ivory md:px-12"
-      : "pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6 text-ivory mix-blend-difference md:px-12";
+      : `pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6 text-ivory md:px-12${open ? "" : " mix-blend-difference"}`;
 
   return (
     <nav ref={ref} className={navClass} aria-label="Main navigation">
@@ -80,46 +90,53 @@ export function Navigation({ variant = "blend" }: NavigationProps) {
         {open ? "Close" : "Menu"}
       </button>
 
-      {open && (
-        <div className="pointer-events-auto fixed inset-0 z-50 flex flex-col justify-center gap-8 bg-midnight px-8 mix-blend-normal md:hidden">
-          <button
-            className="tech-label absolute right-6 top-7 text-ivory"
-            onClick={() => setOpen(false)}
+      {open &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[60] flex flex-col justify-center gap-8 bg-midnight px-8 md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Main menu"
           >
-            Close
-          </button>
-          {LINKS.map((l) =>
-            l.href === "/residences" ? (
-              <Link
-                key={l.id}
-                to="/residences"
-                onClick={() => setOpen(false)}
-                className="display-serif text-left text-4xl text-ivory"
-              >
-                {l.label}
-              </Link>
-            ) : onHome && l.hash ? (
-              <button
-                key={l.id}
-                onClick={() => go(l.hash)}
-                className="display-serif text-left text-4xl text-ivory"
-              >
-                {l.label}
-              </button>
-            ) : (
-              <Link
-                key={l.id}
-                to={l.href}
-                hash={l.hash}
-                onClick={() => setOpen(false)}
-                className="display-serif text-left text-4xl text-ivory"
-              >
-                {l.label}
-              </Link>
-            ),
-          )}
-        </div>
-      )}
+            <button
+              className="tech-label absolute right-6 top-7 text-ivory"
+              onClick={() => setOpen(false)}
+            >
+              Close
+            </button>
+            {LINKS.map((l) =>
+              l.href === "/residences" ? (
+                <Link
+                  key={l.id}
+                  to="/residences"
+                  onClick={() => setOpen(false)}
+                  className="display-serif text-left text-4xl text-ivory"
+                >
+                  {l.label}
+                </Link>
+              ) : onHome && l.hash ? (
+                <button
+                  key={l.id}
+                  onClick={() => go(l.hash)}
+                  className="display-serif text-left text-4xl text-ivory"
+                >
+                  {l.label}
+                </button>
+              ) : (
+                <Link
+                  key={l.id}
+                  to={l.href}
+                  hash={l.hash}
+                  onClick={() => setOpen(false)}
+                  className="display-serif text-left text-4xl text-ivory"
+                >
+                  {l.label}
+                </Link>
+              ),
+            )}
+          </div>,
+          document.body,
+        )}
     </nav>
   );
 }
